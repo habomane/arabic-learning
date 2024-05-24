@@ -5,13 +5,9 @@ import Footer from "./footer";
 
 function AppLayout() {
   return (
-    <div className="">
+    <div>
       <Header />
-
-      <main>
         <Outlet />
-      </main>
-
       <Footer />
     </div>
   );
