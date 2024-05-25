@@ -14,12 +14,13 @@ export default function LevelPage()
         {"ar": ' كبيرة', "en": "big", "pos": 4}
     ]);
     const [englishTranslation, setEnglishTranslation] = useState("The car was big");
-    const [arabicHtml, setArabicHtml] = useState("");
+    const [arabicArray, setArabicArray] = useState([]);
     const [answer, setAnswer] = useState("");
 
     const [score, setScore] = useState({"pos": 1, "tries": 1})
     useEffect(() => {
-        arabicHtmlColoring()
+        const array = arabicTextArray.sort((a, b) => a["pos"] - b["pos"])
+        setArabicArray(array)
         
     }, [score])
 
@@ -38,7 +39,6 @@ export default function LevelPage()
         }
         })
 
-        setArabicHtml(arabicText)
     }
 
     function checkAnswer(event)
@@ -71,8 +71,20 @@ export default function LevelPage()
                 <p className="text-sm font-arabic">﷽ </p>
             </section>
 
-            <section className="flex flex-col justify-center items-center py-3 mt-20 gap-y-6">
-                <h2 className="text-4xl font-arabic"> {arabicHtml}
+            <section className="flex flex-col justify-center items-center py-3 mt-12 gap-y-6">
+                <h2 className="text-4xl font-arabic"> 
+                {
+                    arabicArray.map((item) => {
+                       if(item["pos"] === score["pos"])
+                        {
+                            return <span key={item} className="underline">{item["ar"]}</span>
+                        }
+                        else
+                        {
+                                return <span key={item}>{item["ar"]}</span>
+                        }
+                    })
+                }
                  </h2>
                  <div className="flex flex-wrap justify-between w-[30%] mb-12 items-center">
                  {
@@ -91,6 +103,11 @@ export default function LevelPage()
                 onChange={(e) => setAnswer(e.target.value)}
                 onKeyDown={(e) => checkAnswer(e)}
                 className="border border-4 border-black py-1"></input>
+            </section>
+            
+            <section className={`${score["pos"] === 5 ? 'flex ': 'hidden '} flex-col justify-center items-center gap-y-3 mt-5`}>
+            <h3>Answer: </h3>
+                <h3>{englishTranslation}</h3>
             </section>
         </main>
     )
